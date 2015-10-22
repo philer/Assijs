@@ -1,9 +1,10 @@
-var Cpu = (function($) {
+var Cpu = (function($, undefined) {
   
   "use strict";
   
-  function Cpu($cpu, mem, ops) {
+  function Cpu($cpu, mem, ops, conf) {
     this.memory = mem;
+    
     this.operations = Object.create(null);
     for (var op in ops) {
       if (ops.hasOwnProperty(op)) {
@@ -11,33 +12,40 @@ var Cpu = (function($) {
       }
     }
     
-    this.$cpu = $cpu;
+    // this.maxInt = 1 << (this.wordLength - 1);
+    // this.intMask = -1 << this.wordLength
     
-    new MemoryCell(this, 'akku',      0);
-    new MemoryCell(this, 'counter',   0);
-    new MemoryCell(this, 'operation', 0);
-    new MemoryCell(this, 'argument',  0);
-    this.nFlag = new MemoryCell(null, 'nFlag',     false);
-    this.zFlag = new MemoryCell(null, 'zFlag',     false);
+    this.delay = 0;
+    this.step = this.step.bind(this);
+    
+    // this.$cpu = $cpu;
+    this.akku      = new MemoryCell($('.akku',      $cpu), conf.wordLength, 0);
+    this.counter   = new MemoryCell($('.counter',   $cpu), conf.wordLength, 0);
+    this.operation = new MemoryCell($('.operation', $cpu), conf.wordLength, 0);
+    this.argument  = new MemoryCell($('.argument',  $cpu), conf.wordLength, 0);
+    this.nFlag     = new MemoryCell($('.n-flag',    $cpu), conf.wordLength, false);
+    this.zFlag     = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
+    
+    MemoryCell.clearHighlights();
   }
   
   Cpu.prototype = {
     
     run: function(prog) {
       if (prog !== undefined) {
-        this.setProg(prog);
+        this.setProgram(prog);
       }
-      this.counter = 0;
-      this.intervalId = setInterval(this.step.bind(this), 100);
+      this.counter.set(0);
+      this.intervalId = setInterval(this.step, this.delay);
     },
     
     step: function() {
       MemoryCell.clearHighlights();
       
-      if (this.counter % 2) { // argument
-        this.argument = this.prog[this.counter];
+      if (this.counter.get() % 2) { // argument
+        this.argument.set(this.prog[this.counter.get()]);
         
-        var hold = this.operations[this.operation].call(this, this.argument);
+        var hold = this.operations[this.operation.get()].call(this, this.argument.get());
         if (!this.zFlag.updated) {
           this.zFlag.set(false);
         }
@@ -46,60 +54,31 @@ var Cpu = (function($) {
         }
         if (hold) {
           clearInterval(this.intervalId);
+          this.intervalId = false;
         }
       } else { // operator
-        this.operation = this.prog[this.counter];
+        this.operation.set(this.prog[this.counter.get()]);
       }
-      console.log(this.counter, this.operations[this.operation], this.argument, this.zFlag.get());
-      ++this.counter;
+      this.counter.increment();
     },
     
-    setProg: function(prog) {
+    setProgram: function(prog) {
+      MemoryCell.clearHighlights();
       this.prog = prog;
       this.memory.write(0, prog);
-    },
-    
-    getMem: function(addr) {
-      return this.memory.get(addr);
-    },
-    
-    setMem: function(addr, val) {
-      this.memory.set(addr, val);
-    },
-    
-    setAkku: function(val) {
-      this.akku = val;
-      // this.$akku.text(val);
       return this;
     },
     
-    getAkku: function() {
-      return this.akku;
+    setSpeed: function(speed) {
+      this.delay = 1000 - speed;
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
+        this.intervalId = setInterval(this.step, this.delay);
+      }
+      return this;
     },
     
   };
-  
-  /**
-   * Simple camel case conversion function:
-   * Removes anything that isn't a letter/digit and uppercases the following letter.
-   * Does NOT handle weird utf-8 characters or whatever.
-   * 
-   * "foo bar" -> "fooBar"
-   * "foo_bar" -> "fooBar"
-   * "foo-bar" -> "fooBar"
-   * @param {string}  str input
-   * @return {string}     camel case version of input
-   */
-  function camelCase(str) {
-    var parts = str.split(/[^A-Za-z0-9]+/),
-      i = 0;
-    str = parts[0];
-    while (++i < parts.length) {
-      str += parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
-    }
-    return str;
-  }
-  
   
   return Cpu;
   

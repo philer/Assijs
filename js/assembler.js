@@ -27,7 +27,6 @@ var Assembler = (function() {
         if (!line) continue;
         
         if (line.match(this.labelRegex)) {
-          // labels[line.slice(0, -1)] = addr + 1;
           labels[line.slice(0, -1)] = addr;
           continue;
         }
@@ -48,12 +47,9 @@ var Assembler = (function() {
         for (var a = 0/*, argCount = parts.length*/ ; a < argCount ; ++a) {
           prog[addr++] = parts[a] || 0;
         }
-        // prog[addr++] = {
-        //   code: this.operations[name].code,
-        //   args: parts,
-        // }
       }
       
+      // resolve labels and cast strings to int
       prog = prog.map(function(val) {
         if ($.isNumeric(val)) {
           return +val;
@@ -64,7 +60,7 @@ var Assembler = (function() {
           return labels[val];
         }
       });
-      console.log(prog);
+      
       return prog;
     },
     

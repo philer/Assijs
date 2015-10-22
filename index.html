@@ -8,78 +8,110 @@
   <head>
     <meta charset="utf-8">
     <title>Assi.js</title>
-    <!-- <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
     
-    <section class="editor">
-      <textarea>
-    LOADI 49
-    STORE 100
-
-    STORE 101
-    LOADI 1
-    STORE 102
-
-loop:
-    LOAD 101
-    CMP 102
-
-    JMPZ loop_end
-
-    LOAD 101
-    ADD 102
-    DIVI 2
-    STORE 101
-
-    LOAD 100
-    DIV 101
-    STORE 102
-
-    JMP loop
-
-loop_end:
-    LOAD 100
-HOLD
-      </textarea>
-    </section>
-    
-    <section class="cpu">
+    <section class="window cpu">
       <h2>CPU</h2>
-      
-      <div>Akku:      <span class="memcell-akku"></span></div>
-      <div>Counter:   <span class="memcell-counter"></span></div>
-      <div>Operation: <span class="memcell-operation"></span></div>
-      <div>Argument:  <span class="memcell-argument"></span></div>
-      <div>Z:         <span class="memcell-zFlag"></span></div>
-      <div>N:         <span class="memcell-nFlag"></span></div>
+      <nav class="controls">
+        <button class="playpause"><i class="fa fa-fw fa-play"></i></button>
+        <button class="step-forward"><i class="fa fa-fw fa-step-forward"></i></button>
+        <input class="speed" type="range" min="0" max="1000" value="1000" step="10" />
+      </nav>
+      <div>Akku:      <span class="akku"></span></div>
+      <div>Counter:   <span class="counter"></span></div>
+      <div>Operation: <span class="operation"></span></div>
+      <div>Argument:  <span class="argument"></span></div>
+      <div>Z:         <span class="z-flag"></span></div>
+      <div>N:         <span class="n-flag"></span></div>
     </section>
     
-    <section class="memory">
-      <h2>Memory</h2>
-      <table>
-        <thead>
-          <tr>
-            <td></td>
-            <th>+0</th>
-            <th>+1</th>
-            <th>+2</th>
-            <th>+3</th>
-            <th>+4</th>
-            <th>+5</th>
-            <th>+6</th>
-            <th>+7</th>
-            <th>+8</th>
-            <th>+9</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-        </tbody>
-      </table>
+    <section class="window memory">
+      <header>
+        <h2>Memory</h2>
+        <nav class="controls">
+          <button class="memory-clear">Clear</button>
+        </nav>
+      </header>
       
+      <div class="scrollbox">
+        <table>
+          <thead>
+            <tr>
+              <td></td>
+              <th>+0</th>
+              <th>+1</th>
+              <th>+2</th>
+              <th>+3</th>
+              <th>+4</th>
+              <th>+5</th>
+              <th>+6</th>
+              <th>+7</th>
+              <th>+8</th>
+              <th>+9</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
+    
+    
+    <section class="window editor">
+      <header>
+        <h2>Editor</h2>
+        <nav class="controls">
+          <button class="assemble">Assemble</button>
+        </nav>
+      </header>
+      
+      <div class="scrollbox">
+        <textarea>
+overflow:
+    LOADI 32766
+    STORE 100
+    ADDI 1
+    STORE 101
+    ADDI 1
+    STORE 102
+    ADDI 1
+    STORE 103
+    HOLD
+
+
+;heron:
+;    LOADI 49
+;    STORE 100
+;
+;    STORE 101
+;    LOADI 1
+;    STORE 102
+;
+;loop:
+;    LOAD 101
+;    CMP 102
+;
+;    JMPZ loop_end
+;
+;    LOAD 101
+;    ADD 102
+;    DIVI 2
+;    STORE 101
+;
+;    LOAD 100
+;    DIV 101
+;    STORE 102
+;
+;    JMP loop
+;
+;loop_end:
+;HOLD</textarea>
+      </div>
+    </section>
+    
+    
     <!-- // <script src="../cdn/jquery-2.1.3.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     

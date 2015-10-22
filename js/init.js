@@ -2,18 +2,37 @@
   
   "use strict";
   
+  var memory = new Memory(
+      $('.memory')
+    , conf
+  );
+  
   var cpu = new Cpu(
       $('.cpu')
-    , new Memory($('.memory'), conf.memory.lines, conf.memory.columns)
+    , memory
     , ops
-  );
+    , conf
+  )
+    .setSpeed($('input.speed').val())
+    ;
   
   var assembler = new Assembler(cpu, ops);
   
-  var prog = $('.editor textarea').text();
+  $('button.assemble').click(function() {
+    cpu.setProgram(assembler.parse($('.editor textarea').text()));
+  });
   
-  var program = assembler.parse(prog);
+  $('button.playpause').click(function() {
+    // cpu.run(assembler.parse($('.editor textarea').text()));
+    cpu.run();
+  });
   
-  cpu.run(program);
+  $('input.speed').change(function() {
+    cpu.setSpeed(this.value);
+  });
+  
+  $('button.memory-clear').click(function() {
+    memory.clear();
+  });
   
 })(jQuery, CONFIG, OPERATIONS);
