@@ -12,7 +12,7 @@ var Cpu = (function($, undefined) {
     this.operations = Object.create(null);
     for (var op in ops) {
       if (ops.hasOwnProperty(op)) {
-        this.operations[ops[op].code] = ops[op].callback;
+        this.operations[ops[op].code] = ops[op];
       }
     }
     
@@ -83,8 +83,12 @@ var Cpu = (function($, undefined) {
           // throw new Cpu.RuntimeException('Unknown opcode ' + this.operation.get());
         }
         
+        if (op.opString) {
+          $('.cpu-log').append('<div>' + op.opString.call(this, this.argument.get()) + "</div>");
+        }
+        
         // microstep 4
-        var hold = op.call(this, this.argument.get());
+        var hold = op.callback.call(this, this.argument.get());
         
         if (hold) {
           this.stop();

@@ -137,6 +137,13 @@ var OPERATIONS = {
     callback: function(addr) {
       this.accumulator.set(this.accumulator.get() + this.memory.get(addr));
     },
+    opString: function(addr) {
+      // console.log(this.argument.get(), this.accumulator.get(), this.memory.get(this.argument.get()));
+      return "acc := acc + mem[" + addr + "] = "
+          + this.accumulator.get() + " + " + this.memory.get(addr)
+          + " = " + (this.accumulator.get() + this.memory.get(addr))
+          ;
+    },
   },
   
   ADDI: {
