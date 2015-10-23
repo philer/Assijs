@@ -22,20 +22,20 @@ var Cpu = (function($, undefined) {
     this.step = this.step.bind(this);
     
     // this.$cpu = $cpu;
-    this.akku      = new MemoryCell($('.akku',      $cpu), conf.wordLength, 0);
-    this.counter   = new MemoryCell($('.counter',   $cpu), conf.wordLength, 0);
-    this.operation = new MemoryCell($('.operation', $cpu), conf.wordLength, 0);
-    this.argument  = new MemoryCell($('.argument',  $cpu), conf.wordLength, 0);
-    this.nFlag     = new MemoryCell($('.n-flag',    $cpu), conf.wordLength, false);
-    this.zFlag     = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
-    this.vFlag     = new MemoryCell($('.v-flag',    $cpu), conf.wordLength, false);
+    this.accumulator = new MemoryCell($('.accumulator',      $cpu), conf.wordLength, 0);
+    this.counter     = new MemoryCell($('.counter',   $cpu), conf.wordLength, 0);
+    this.operation   = new MemoryCell($('.operation', $cpu), conf.wordLength, 0);
+    this.argument    = new MemoryCell($('.argument',  $cpu), conf.wordLength, 0);
+    this.nFlag       = new MemoryCell($('.n-flag',    $cpu), conf.wordLength, false);
+    this.zFlag       = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
+    this.vFlag       = new MemoryCell($('.v-flag',    $cpu), conf.wordLength, false);
     
     /**
-     * Automatically set overflow flag according to new akku value
+     * Automatically set overflow flag according to new accumulator value
      * 
      * @param {int} val
      */
-    this.akku.set = function(val) {
+    this.accumulator.set = function(val) {
       if (val !== this.fixInt(val)) {
         _this.vFlag.set(true);
       }
@@ -107,13 +107,13 @@ var Cpu = (function($, undefined) {
      * Reset all flags that have not been updated
      */
     _updateFlags: function() {
-      if (!this.akku.get()) {
+      if (!this.accumulator.get()) {
         this.zFlag.set(true);
       } else if (!this.zFlag.updated) {
         this.zFlag.set(false);
       }
       
-      if (this.akku.get() < 0) {
+      if (this.accumulator.get() < 0) {
         this.nFlag.set(true);
       } else if (!this.nFlag.updated) {
         this.nFlag.set(false);
@@ -127,7 +127,7 @@ var Cpu = (function($, undefined) {
     
     reset: function() {
       this.stop();
-      this.akku.set(0);
+      this.accumulator.set(0);
       this.counter.set(0);
       this.operation.set(0);
       this.argument.set(0);
