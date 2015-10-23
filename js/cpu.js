@@ -3,6 +3,8 @@ var Cpu = (function($, undefined) {
   "use strict";
   
   function Cpu($cpu, mem, ops, conf) {
+    var _this = this;
+    
     this.memory = mem;
     
     this.operations = Object.create(null);
@@ -24,6 +26,14 @@ var Cpu = (function($, undefined) {
     this.argument  = new MemoryCell($('.argument',  $cpu), conf.wordLength, 0);
     this.nFlag     = new MemoryCell($('.n-flag',    $cpu), conf.wordLength, false);
     this.zFlag     = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
+    this.vFlag     = new MemoryCell($('.v-flag',    $cpu), conf.wordLength, false);
+    
+    this.akku.set = function(val) {
+      if (val !== this.fixInt(val)) {
+        _this.vFlag.set(true);
+      }
+      MemoryCell.prototype.set.call(this, val);
+    };
     
     MemoryCell.clearHighlights();
   }
@@ -38,10 +48,10 @@ var Cpu = (function($, undefined) {
     },
     
     step: function() {
-      MemoryCell.clearHighlights();
-      
-      if (this.counter.get() % 2) { // argument
+      if (this.counter.get() % 2) { // argument -> execute operation
         this.argument.set(this.memory.get(this.counter.get()));
+        
+        MemoryCell.clearHighlights();
         
         var op = this.operations[this.operation.get()];
         
@@ -52,19 +62,31 @@ var Cpu = (function($, undefined) {
         
         var hold = op.call(this, this.argument.get());
         
-        if (!this.zFlag.updated) {
-          this.zFlag.set(false);
-        }
-        if (!this.nFlag.updated) {
-          this.nFlag.set(false);
-        }
         if (hold) {
           this.stop();
+        } else {
+          this.clearFlags();
         }
       } else { // operator
         this.operation.set(this.memory.get(this.counter.get()));
       }
       this.counter.increment();
+      return this;
+    },
+    
+    /**
+     * Reset all flags that have not been updated
+     */
+    clearFlags: function() {
+      if (!this.zFlag.updated) {
+        this.zFlag.set(false);
+      }
+      if (!this.nFlag.updated) {
+        this.nFlag.set(false);
+      }
+      if (!this.vFlag.updated) {
+        this.vFlag.set(false);
+      }
       return this;
     },
     

@@ -27,6 +27,7 @@
       <div>Argument:  <span class="argument"></span></div>
       <div>Z:         <span class="z-flag"></span></div>
       <div>N:         <span class="n-flag"></span></div>
+      <div>V:         <span class="v-flag"></span></div>
     </section>
     
     <section class="window memory">
@@ -73,44 +74,44 @@
       
       <div class="scrollbox">
         <textarea>
-heron:
-    LOADI 49
-    STORE 100
-
-    STORE 101
-    LOADI 1
-    STORE 102
-
-loop:
-    LOAD 101
-    CMP 102
-
-    JMPZ loop_end
-
-    LOAD 101
-    ADD 102
-    DIVI 2
-    STORE 101
-
-    LOAD 100
-    DIV 101
-    STORE 102
-
-    JMP loop
-
-loop_end:
-HOLD
-
-;overflow:
-;    LOADI 32766
+;heron:
+;    LOADI 49
 ;    STORE 100
-;    ADDI 1
+;
 ;    STORE 101
-;    ADDI 1
+;    LOADI 1
 ;    STORE 102
-;    ADDI 1
-;    STORE 103
-;    HOLD
+;
+;loop:
+;    LOAD 101
+;    CMP 102
+;
+;    JMPZ loop_end
+;
+;    LOAD 101
+;    ADD 102
+;    DIVI 2
+;    STORE 101
+;
+;    LOAD 100
+;    DIV 101
+;    STORE 102
+;
+;    JMP loop
+;
+;loop_end:
+;HOLD
+
+overflow:
+    LOADI 32766
+    STORE 50
+    ADDI 1
+    STORE 51
+    ADDI 1
+    STORE 52
+    ADDI 1
+    STORE 53
+    HOLD
 </textarea>
       </div>
     </section>

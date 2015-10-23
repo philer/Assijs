@@ -6,7 +6,7 @@ var Memory = (function($) {
     var lines = conf.memory.lines
       , cols = conf.memory.columns
       ;
-    // this.$thead = $("table > thead", $elem);
+    this.$thead = $("table > thead", $elem);
     this.$tbody = $("table > tbody", $elem);
     
     this.length = lines * cols;
@@ -23,9 +23,18 @@ var Memory = (function($) {
   Memory.prototype = {
     
     initUi: function(lines, cols) {
-      var html = ''
-        , addr = 0
-        ;
+      var addr, html;
+      
+      // table head
+      html = '';
+      for (var col = 0 ; col < cols ; ++col) {
+        html += '<th>+' + col + '</th>';
+      }
+      this.$thead.html('<tr><td></td>' + html + '</tr>');
+      
+      // table body
+      html = '';
+      addr = 0;
       for (var line = 0 ; line < lines ; ++line) {
         html += '<tr><th>' + addr + '</th>';
         for (var col = 0 ; col < cols ; ++col) {

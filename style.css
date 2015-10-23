@@ -59,11 +59,11 @@ h2, nav, button {
 
 .cpu {
   left: 50%;
-  height: 14em;
+  height: 15em;
 }
 .memory {
   left: 50%;
-  top: 14em;
+  top: 15em;
   border-top: 2px solid #333;
   font-size: .9em;
 }
