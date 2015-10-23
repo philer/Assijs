@@ -3,21 +3,21 @@ var OPERATIONS = {
   // Controll
   
   HOLD: {
-    code: 900,
+    code: 00,
     callback: function() {
       return true;
     },
   },
   
   JMP: {
-    code: 500,
+    code: 01,
     callback: function(target) {
       this.counter.set(target - 1);
     },
   },
   
   JMPZ: {
-    code: 501,
+    code: 02,
     callback: function(target) {
       if (this.zFlag.get()) {
         this.counter.set(target - 1);
@@ -28,21 +28,21 @@ var OPERATIONS = {
   // Memory
   
   LOAD: {
-    code: 901,
+    code: 100,
     callback: function(addr) {
       this.akku.set(this.memory.get(addr));
     },
   },
   
   LOADI: {
-    code: 902,
+    code: 101,
     callback: function(val) {
       this.akku.set(+val);
     },
   },
   
   STORE: {
-    code: 903,
+    code: 102,
     callback: function(addr) {
       this.memory.set(addr, this.akku.get());
     },
@@ -51,7 +51,7 @@ var OPERATIONS = {
   // Logic
   
   CMP: {
-    code: 400,
+    code: 201,
     callback: function(addr) {
       var mem = this.memory.get(addr)
         , akk = this.akku.get()
@@ -65,7 +65,7 @@ var OPERATIONS = {
   },
   
   CMPI: {
-    code: 401,
+    code: 202,
     callback: function(val) {
       var akk = this.akku.get();
       if (akk === val) {
@@ -79,70 +79,70 @@ var OPERATIONS = {
   // Math
   
   ADD: {
-    code: 904,
+    code: 203,
     callback: function(addr) {
       this.akku.set(this.akku.get() + this.memory.get(addr));
     },
   },
   
   ADDI: {
-    code: 905,
+    code: 204,
     callback: function(val) {
       this.akku.set(this.akku.get() + +val);
     },
   },
   
   SUB: {
-    code: 906,
+    code: 205,
     callback: function(addr) {
       this.akku.set(this.akku.get() - this.memory.get(addr));
     },
   },
   
   SUBI: {
-    code: 907,
+    code: 206,
     callback: function(val) {
       this.akku.set(this.akku.get() - +val);
     },
   },
   
   MUL: {
-    code: 908,
+    code: 207,
     callback: function(addr) {
       this.akku.set(this.akku.get() * this.memory.get(addr));
     },
   },
   
   MULI: {
-    code: 909,
+    code: 208,
     callback: function(val) {
       this.akku.set(this.akku.get() * +val);
     },
   },
   
   DIV: {
-    code: 910,
+    code: 209,
     callback: function(addr) {
       this.akku.set(Math.floor(this.akku.get() / this.memory.get(addr)));
     },
   },
   
   DIVI: {
-    code: 911,
+    code: 210,
     callback: function(val) {
       this.akku.set(Math.floor(this.akku.get() / +val));
     },
   },
   
   MOD: {
-    code: 912,
+    code: 211,
     callback: function(addr) {
       this.akku.set(this.akku.get() % this.memory.get(addr));
     },
   },
   
   MODI: {
-    code: 913,
+    code: 212,
     callback: function(val) {
       this.akku.set(this.akku.get() % +val);
     },

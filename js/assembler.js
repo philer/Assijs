@@ -37,10 +37,10 @@ var Assembler = (function() {
           ;
         
         if (!op) {
-          throw "Operation " + name + " unknown on line " + (l + 1);
+          throw new Assembler.ParseException("Operation " + name + " unknown on line " + (l + 1));
         }
         if (parts.length !== op.callback.length) {
-          throw "Operation " + name + " expects " + op.callback.length + " arguments, " + parts.length + " given on line " + (l + 1);
+          throw new Assembler.ParseException("Operation " + name + " expects " + op.callback.length + " arguments, " + parts.length + " given on line " + (l + 1));
         }
         
         prog[addr++] = this.operations[name].code;
@@ -86,6 +86,9 @@ var Assembler = (function() {
       return string.replace(this.commentRegex, '').trim();
     },
   };
+  
+  
+  Assembler.ParseException = Error;
   
   return Assembler;
   

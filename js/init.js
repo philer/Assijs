@@ -2,6 +2,8 @@
   
   "use strict";
   
+  // init
+  
   var memory = new Memory(
       $('.memory')
     , conf
@@ -18,21 +20,60 @@
   
   var assembler = new Assembler(cpu, ops);
   
-  $('button.assemble').click(function() {
-    cpu.setProgram(assembler.parse($('.editor textarea').text()));
+  
+  // editor UI
+  
+  $('.assemble').click(function() {
+    try {
+      cpu.setProgram(assembler.parse($('.editor textarea').val()));
+    } catch (e) {
+      if (e instanceof Assembler.ParseException) {
+        $('.errors').text(e.message);
+      } else {
+        throw e;
+      }
+    }
   });
   
-  $('button.playpause').click(function() {
-    // cpu.run(assembler.parse($('.editor textarea').text()));
-    cpu.run();
+  
+  // cpu UI
+  
+  $('.cpu-playpause').click(function() {
+    cpu.toggle();
+    $(this).find('.fa').toggleClass('fa-play fa-pause');
   });
   
-  $('input.speed').change(function() {
+  $('.cpu-step-forward').click(cpu.step.bind(cpu));
+  
+  $('.cpu-reset').click(cpu.reset.bind(cpu));
+  
+  $('.cpu-speed').change(function() {
     cpu.setSpeed(this.value);
   });
   
-  $('button.memory-clear').click(function() {
+  
+  // memory UI
+  
+  $('.memory-clear').click(function() {
     memory.clear();
+  });
+  
+  $('.memory-dec').click(function() {
+    MemoryCell.setDisplayBase(10);
+    $('.memory-hex, .memory-bin').removeClass('active');
+    $(this).addClass('active')
+  });
+  
+  $('.memory-hex').click(function() {
+    MemoryCell.hex();
+    $('.memory-dec, .memory-bin').removeClass('active');
+    $(this).addClass('active')
+  });
+  
+  $('.memory-bin').click(function() {
+    MemoryCell.bin();
+    $('.memory-dec, .memory-hex').removeClass('active');
+    $(this).addClass('active')
   });
   
 })(jQuery, CONFIG, OPERATIONS);
