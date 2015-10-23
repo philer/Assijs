@@ -3,7 +3,9 @@ var Cpu = (function($, undefined) {
   "use strict";
   
   function Cpu($cpu, mem, ops, conf) {
-    var _this = this;
+    var _this = this
+      , $this = $(this)
+      ;
     
     this.memory = mem;
     
@@ -28,6 +30,11 @@ var Cpu = (function($, undefined) {
     this.zFlag     = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
     this.vFlag     = new MemoryCell($('.v-flag',    $cpu), conf.wordLength, false);
     
+    /**
+     * Automatically set overflow flag according to new akku value
+     * 
+     * @param {int} val
+     */
     this.akku.set = function(val) {
       if (val !== this.fixInt(val)) {
         _this.vFlag.set(true);
@@ -35,64 +42,14 @@ var Cpu = (function($, undefined) {
       MemoryCell.prototype.set.call(this, val);
     };
     
+    this.on       = $.fn.on.bind($this);
+    this.one      = $.fn.one.bind($this);
+    this._trigger = $.fn.trigger.bind($this);
+    
     MemoryCell.clearHighlights();
   }
   
   Cpu.prototype = {
-    
-    run: function(program) {
-      if (program !== undefined) {
-        this.setProgram(program);
-      }
-      return this.reset().start();
-    },
-    
-    step: function() {
-      if (this.counter.get() % 2) { // argument -> execute operation
-        this.argument.set(this.memory.get(this.counter.get()));
-        
-        MemoryCell.clearHighlights();
-        
-        var op = this.operations[this.operation.get()];
-        
-        if (!op) {
-          return this._fail('Unknown opcode ' + this.operation.get());
-          // throw new Cpu.RuntimeException('Unknown opcode ' + this.operation.get());
-        }
-        
-        var hold = op.call(this, this.argument.get());
-        
-        if (hold) {
-          this.stop();
-        } else {
-          this.clearFlags();
-        }
-      } else { // operator
-        this.operation.set(this.memory.get(this.counter.get()));
-      }
-      this.counter.increment();
-      return this;
-    },
-    
-    /**
-     * Reset all flags that have not been updated
-     */
-    clearFlags: function() {
-      if (!this.zFlag.updated) {
-        this.zFlag.set(false);
-      }
-      if (!this.nFlag.updated) {
-        this.nFlag.set(false);
-      }
-      if (!this.vFlag.updated) {
-        this.vFlag.set(false);
-      }
-      return this;
-    },
-    
-    toggle: function() {
-      return this.intervalId ? this.stop() : this.start();
-    },
     
     start: function() {
       this.intervalId = setInterval(this.step, this.delay);
@@ -102,6 +59,69 @@ var Cpu = (function($, undefined) {
     stop: function() {
       clearInterval(this.intervalId);
       this.intervalId = false;
+      this._trigger('hold');
+      return this;
+    },
+    
+    toggle: function() {
+      return this.intervalId ? this.stop() : this.start();
+    },
+    
+    step: function() {
+      if (this.counter.get() % 2) { // argument -> execute operation
+        
+        // microstep 2
+        this.argument.set(this.memory.get(this.counter.get()));
+        
+        MemoryCell.clearHighlights();
+        
+        // microstep 3
+        var op = this.operations[this.operation.get()];
+        
+        if (!op) {
+          return this._fail('Unknown opcode ' + this.operation.get());
+          // throw new Cpu.RuntimeException('Unknown opcode ' + this.operation.get());
+        }
+        
+        // microstep 4
+        var hold = op.call(this, this.argument.get());
+        
+        if (hold) {
+          this.stop();
+        } else {
+          
+          // microstep 5
+          this._updateFlags();
+        }
+        
+      } else { // operator
+        
+        // microstep 1
+        this.operation.set(this.memory.get(this.counter.get()));
+      }
+      this.counter.increment();
+      return this;
+    },
+    
+    /**
+     * Reset all flags that have not been updated
+     */
+    _updateFlags: function() {
+      if (!this.akku.get()) {
+        this.zFlag.set(true);
+      } else if (!this.zFlag.updated) {
+        this.zFlag.set(false);
+      }
+      
+      if (this.akku.get() < 0) {
+        this.nFlag.set(true);
+      } else if (!this.nFlag.updated) {
+        this.nFlag.set(false);
+      }
+      
+      if (!this.vFlag.updated) {
+        this.vFlag.set(false);
+      }
       return this;
     },
     
@@ -114,13 +134,6 @@ var Cpu = (function($, undefined) {
       this.nFlag.set(false);
       this.zFlag.set(false);
       MemoryCell.clearHighlights();
-      return this;
-    },
-    
-    setProgram: function(program) {
-      MemoryCell.clearHighlights();
-      // this.program = program;
-      this.memory.write(0, program);
       return this;
     },
     

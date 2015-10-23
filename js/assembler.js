@@ -11,8 +11,22 @@ var Assembler = (function() {
   
   Assembler.prototype = {
     
-    commentRegex: /;.*$/,
-    labelRegex:   /^\S+:$/,
+    /**
+     * Regex for labels.
+     * For a line of the form "label: OP ARG"
+     * it will return "label" at index 1 and "OP ARG" at index 2 (may be empty)
+     * 
+     * @type {RegExp}
+     */
+    labelRegex:   /^(\S+):\s*(.*)$/,
+    
+    /**
+     * Comments start with ; or # and go all the way to the end of the line
+     * 
+     * @type {RegExp}
+     */
+    commentRegex: /[;#].*$/,
+    
     
     parse: function(text) {
       var prog = []
@@ -24,13 +38,18 @@ var Assembler = (function() {
       for (var l = 0, len = lines.length ; l < len ; ++l) {
         var line = lines[l];
         
-        if (!line) continue;
-        
-        if (line.match(this.labelRegex)) {
-          labels[line.slice(0, -1)] = addr;
+        // extract label
+        var labelMatch = line.match(this.labelRegex);
+        if (labelMatch) {
+          labels[labelMatch[1]] = addr;
+          line = labelMatch[2];
           continue;
         }
         
+        // skip empty lines
+        if (!line) continue;
+        
+        // process OP declaration
         var parts = lines[l].split(/\s+/)
           , name = parts.shift()
           , op = this.operations[name]

@@ -25,22 +25,31 @@
   
   $('.assemble').click(function() {
     try {
-      cpu.setProgram(assembler.parse($('.editor textarea').val()));
+      var program = assembler.parse($('.editor textarea').val());
     } catch (e) {
       if (e instanceof Assembler.ParseException) {
         $('.errors').text(e.message);
+        return;
       } else {
         throw e;
       }
     }
+    cpu.reset();
+    memory.write(0, program);
   });
   
   
   // cpu UI
   
-  $('.cpu-playpause').click(function() {
+  var $cpuPlayPause     = $('.cpu-playpause')
+    , $cpuPlayPauseIcon = $cpuPlayPause.find('.fa')
+    ;
+  $cpuPlayPause.click(function() {
+    $cpuPlayPauseIcon.removeClass('fa-play').addClass('fa-pause');
     cpu.toggle();
-    $(this).find('.fa').toggleClass('fa-play fa-pause');
+  });
+  $(cpu).on('hold', function() {
+    $cpuPlayPauseIcon.removeClass('fa-pause').addClass('fa-play');
   });
   
   $('.cpu-step-forward').click(cpu.step.bind(cpu));
