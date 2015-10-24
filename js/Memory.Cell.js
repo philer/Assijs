@@ -25,7 +25,6 @@
         ;
     }
     
-    
     this.set(initValue);
     instances.add(this, true);
   }
@@ -33,7 +32,6 @@
   Cell.prototype = {
     
     get: function() {
-      // accessed.add(this);
       this.accessed = true;
       this.$elem.addClass('accessed');
       return this.value;
@@ -44,8 +42,6 @@
         this.oldValue = this.value;
         this.value = $.isNumeric(val) ? this.fixInt(val) : val;
         this.updated = true;
-        // updated.add(this);
-        // this.trigger('updated');
         this._updateView();
       }      
     },
@@ -96,28 +92,6 @@
       return instances.getUpdated();
     },
     
-    // getUpdated: function() {
-    //   return updated.copy();
-    // },
-    
-    // clearAccessed: function() {
-    //   accessed.each(function(cell) {
-    //       cell.accessed = false;
-    //       cell.$elem.removeClass('accessed');
-    //     })
-    //     .clear();
-    //   return this;
-    // },
-    
-    // clearUpdated: function() {
-    //   updated.each(function(cell) {
-    //       cell.updated = false;
-    //       cell.$elem.removeClass('updated');
-    //     })
-    //     .clear();
-    //   return this;
-    // },
-    
     hex: function(prefix) {
       return this.setDisplayBase(16, prefix || '0x', false);
     },
@@ -155,7 +129,7 @@
       //   .match(chunkRegex).join(' ')
       
       var expr = (unsigned ? "(n>>>0)" : "(n<0?-n:n)")
-               + ".toString(" + +base + ")";
+               + ".toString(" + (+base) + ")";
             
       if (prefix) {
         expr = "('" + '0'.repeat(31) + "'+" + expr + ").slice(-this.intStrLen)";
@@ -164,13 +138,15 @@
         }
       }
       if (chunkLength) {
-        expr += ".match(/.{1," + +chunkLength + "}/g).join(' ')";
+        expr += ".match(/.{1," + (+chunkLength) + "}/g).join(' ')";
       }
       if (!unsigned) {
         expr = "(n<0?'-':'')+" + expr;
       }
       
+      /* jshint evil: true */
       this.prototype.formatInt = new Function("n", "return " + expr);
+      /* jshint evil: false */
       
       this._intBaseLog2 = log2(base);
       

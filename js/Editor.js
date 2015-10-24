@@ -38,8 +38,9 @@ var Editor = (function($, undefined) {
     },
     
     getText: function() {
-      var text = this.$textarea.html().replace(brRegex, "\n");
+      
       // weird hack: css pre apparently hides the last linebreak
+      var text = this.$textarea.html().replace(brRegex, "\n");
       if (text.charAt(text.length - 1) === "\n") {
         text = text.slice(0, -1);
       }

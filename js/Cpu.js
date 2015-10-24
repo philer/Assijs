@@ -1,4 +1,4 @@
-var Cpu = (function($, undefined) {
+var Cpu = (function(eventsTrait, $) {
   
   "use strict";
   
@@ -53,7 +53,7 @@ var Cpu = (function($, undefined) {
     this._clearUpdated()._clearHighlights();
   }
   
-  Cpu.prototype = EventsTrait({
+  Cpu.prototype = eventsTrait({
     
     start: function() {
       this.running = setInterval(this.step, this.delay);
@@ -112,7 +112,7 @@ var Cpu = (function($, undefined) {
           memoryCell: memcell,
           before: memcell.oldValue,
           after: memcell.value,
-        }
+        };
       }));
       
       return this;
@@ -229,4 +229,4 @@ var Cpu = (function($, undefined) {
   
   return Cpu;
   
-})(jQuery);
+})(eventsTrait, jQuery);

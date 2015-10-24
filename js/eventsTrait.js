@@ -1,8 +1,8 @@
-EventsTrait = (function($) {
+eventsTrait = (function($) {
   
   "use strict";
   
-  return function EventsTrait(proto) {
+  return function eventsTrait(proto) {
     
     return $.extend(proto, {
       

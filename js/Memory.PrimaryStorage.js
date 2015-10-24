@@ -23,11 +23,11 @@
   PrimaryStorage.prototype = $.extend(Object.create(Aggregate.prototype), {
     
     initUi: function(lines, cols) {
-      var addr, html;
+      var addr, html, line, col;
       
       // table head
       html = '';
-      for (var col = 0 ; col < cols ; ++col) {
+      for (col = 0 ; col < cols ; ++col) {
         html += '<th>+' + col + '</th>';
       }
       this.$thead.html('<tr><td></td>' + html + '</tr>');
@@ -35,9 +35,9 @@
       // table body
       html = '';
       addr = 0;
-      for (var line = 0 ; line < lines ; ++line) {
+      for (line = 0 ; line < lines ; ++line) {
         html += '<tr><th>' + addr + '</th>';
-        for (var col = 0 ; col < cols ; ++col) {
+        for (col = 0 ; col < cols ; ++col) {
           html += '<td class="memcell memcell-' + addr + '">0</td>';
           ++addr;
         }

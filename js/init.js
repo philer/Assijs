@@ -37,8 +37,9 @@
   $('.editor-save').click(editor.save.bind(editor));
   
   $('.editor-assemble').click(function() {
+    var program;
     try {
-      var program = assembler.parseLines(editor.getLines());
+      program = assembler.parseLines(editor.getLines());
     } catch (e) {
       if (e instanceof Assembler.ParseException) {
         $('.errors').text(e.message);
