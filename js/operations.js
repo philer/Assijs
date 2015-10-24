@@ -12,7 +12,7 @@ var OPERATIONS = {
   JMP: {
     code: 1,
     callback: function(target) {
-      this.counter.set(target - 1);
+      this.counter.set(target);
     },
   },
   
@@ -20,7 +20,7 @@ var OPERATIONS = {
     code: 2,
     callback: function(target) {
       if (this.zFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -29,7 +29,7 @@ var OPERATIONS = {
     code: 3,
     callback: function(target) {
       if (!this.zFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -38,7 +38,7 @@ var OPERATIONS = {
     code: 4,
     callback: function(target) {
       if (this.nFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -47,7 +47,7 @@ var OPERATIONS = {
     code: 5,
     callback: function(target) {
       if (!this.nFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -56,7 +56,7 @@ var OPERATIONS = {
     code: 6,
     callback: function(target) {
       if (!(this.zFlag.get() || this.nFlag.get())) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -65,7 +65,7 @@ var OPERATIONS = {
     code: 7,
     callback: function(target) {
       if (this.zFlag.get() || this.nFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },
@@ -74,7 +74,7 @@ var OPERATIONS = {
     code: 8,
     callback: function(target) {
       if (this.vFlag.get()) {
-        this.counter.set(target - 1);
+        this.counter.set(target);
       }
     },
   },

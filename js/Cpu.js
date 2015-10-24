@@ -77,9 +77,11 @@ var Cpu = (function($, undefined) {
       return this.intervalId ? this.stop() : this.start();
     },
     
-    step: function() {
+    step: function(keepHighlights) {
       
-      this._clearHighlighted();
+      if (keepHighlights !== true) {
+        this._clearHighlighted();
+      }
       
       switch (this._step = this._step % 4 + 1) {
         case 1:
@@ -111,6 +113,14 @@ var Cpu = (function($, undefined) {
       }
       
       return this;
+    },
+    
+    opStep: function() {
+      this._clearHighlighted();
+      this.step(true);
+      while (this._step < 4) {
+        this.step(true);
+      }
     },
     
     /**

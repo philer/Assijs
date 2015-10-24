@@ -8,13 +8,14 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: 'Liberation mono', monospace;
+  font-size: 14px;
   line-height: 1.3em;
 }
 h2 {
-  font-size: 1.1em;
-  margin: 0 .1em;
+  /*font-size: 1.1em;*/
+  margin: 0;
 }
-h2, nav, button {
+h2, nav, .button {
   display: inline-block;
 }
 
@@ -165,7 +166,7 @@ body {
 input[type="range"] {
   padding: .3em .5em;
   margin: .5em 0;
-  height: 2.3em;
+  height: 2.1em;
   vertical-align: middle;
   background-color: #0aa;
   color: white;
