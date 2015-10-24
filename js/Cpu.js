@@ -18,13 +18,14 @@ var Cpu = (function($, undefined) {
     this.program = [];
     
     this.delay = 0;
-    this.step = this.step.bind(this);
+    this._step = 0;
+    this.step  = this.step.bind(this);
     
     // this.$cpu = $cpu;
-    this.accumulator = new Memory.Cell($('.accumulator',      $cpu), conf.wordLength, 0);
-    this.counter     = new Memory.Cell($('.counter',   $cpu), conf.wordLength, 0);
-    this.operation   = new Memory.Cell($('.operation', $cpu), conf.wordLength, 0);
-    this.argument    = new Memory.Cell($('.argument',  $cpu), conf.wordLength, 0);
+    this.accumulator = new Memory.Cell($('.accumulator', $cpu), conf.wordLength, 0);
+    this.counter     = new Memory.Cell($('.counter',     $cpu), conf.wordLength, 0);
+    this.operation   = new Memory.Cell($('.operation',   $cpu), conf.wordLength, 0);
+    this.argument    = new Memory.Cell($('.argument',    $cpu), conf.wordLength, 0);
     this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), conf.wordLength, false);
     this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), conf.wordLength, false);
     this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), conf.wordLength, false);
@@ -77,42 +78,38 @@ var Cpu = (function($, undefined) {
     },
     
     step: function() {
-      if (this.counter.get() % 2) { // argument -> execute operation
-        
-        // microstep 2
-        this.argument.set(this.memory.get(this.counter.get()));
-        
-        this._clearHighlighted();
-        
-        // microstep 3
-        var op = this.operations[this.operation.get()];
-        if (!op) {
-          return this._fail('Unknown opcode ' + this.operation.get());
-          // throw new Cpu.RuntimeException('Unknown opcode ' + this.operation.get());
-        }
-        this.operation.set(op.name);
-        
-        // if (op.opString) {
-        //   $('.cpu-log').append('<div>' + op.opString.call(this, this.argument.get()) + "</div>");
-        // }
-        
-        // microstep 4
-        var hold = op.callback.call(this, this.argument.get());
-        
-        if (hold) {
-          this.stop();
-        } else {
+      
+      this._clearHighlighted();
+      
+      switch (this._step = this._step % 4 + 1) {
+        case 1:
+          this.operation.set(this.memory.get(this.counter.get()));
+          this.counter.increment();
+          break;
           
-          // microstep 5
-          this._updateFlags();
-        }
-        
-      } else { // operator
-        
-        // microstep 1
-        this.operation.set(this.memory.get(this.counter.get()));
+        case 2:
+          this.argument.set(this.memory.get(this.counter.get()));
+          this.counter.increment();
+          break;
+          
+        case 3:
+          this._currentOperation = this.operations[this.operation.get()];
+          if (this._currentOperation) {
+            this.operation.set(this._currentOperation.name);
+          } else {
+            return this._fail('Unknown opcode ' + this.operation.get());
+          }
+          break;
+          
+        case 4:
+          var hold = this._currentOperation.callback.call(this, this.argument.get());
+          if (hold) {
+            this.stop();
+          } else {
+            this._updateFlags();
+          }
       }
-      this.counter.increment();
+      
       return this;
     },
     
@@ -144,6 +141,7 @@ var Cpu = (function($, undefined) {
     },
     
     reset: function() {
+      this._step = 0;
       this.stop();
       this.accumulator.set(0);
       this.counter.set(0);
