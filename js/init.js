@@ -25,6 +25,15 @@
   
   var editor = new Editor($('.editor'));
   
+  var $hiddenFileInput = $('.editor-open-file');
+  $hiddenFileInput.change(function(evt) {
+    editor.open(evt.target.files);
+  });
+  
+  $('.editor-open').click(function(evt) {
+    $hiddenFileInput.click();
+  });
+  
   $('.editor-save').click(editor.save.bind(editor));
   
   $('.editor-assemble').click(function() {

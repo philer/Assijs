@@ -15,7 +15,22 @@ var Editor = (function($, undefined) {
     
     save: function() {
       var blob = new Blob([this.getText()], {type: "text/plain;charset=utf-8"});
-      saveAs(blob, "assijs.txt");
+      saveAs(blob, "assijs.asm");
+    },
+    
+    open: function(files) {
+      var _this = this
+        , reader = new FileReader()
+        ;
+      reader.addEventListener('load', function() {
+        _this.setText(reader.result);
+      });
+      reader.readAsText(files[0]);
+    },
+    
+    setText: function(text) {
+      this.$textarea.text(text);
+      return this.updateGutter();
     },
     
     getText: function() {
