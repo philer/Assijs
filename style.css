@@ -30,14 +30,12 @@ dt, dd {
 }
 dt {
   float: left;
-  width: 10em; /* adjust according to content  + .5em*/
-  /*text-align: right;*/
-  /*color: #85aaaf;*/
+  width: 7em;
 }
 dd {
-  margin-left: 10em;
-  /*text-align: left;*/
-  padding-left: 1em;
+  margin-left: 7em;
+  text-align: right;
+  max-width: 12em;
 }
 dd:after {
   content: "";

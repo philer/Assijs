@@ -15,7 +15,7 @@
     
     this.cells = new Array(this.length);
     for (var addr = this.length ; 0 <= --addr ;) {
-      this.cells[addr] = new Memory.Cell('.memcell-' + addr, conf.wordLength, 0);
+      this.cells[addr] = new Memory.Cell('.memcell-' + addr, conf.wordLength, 0, true);
     }
     
   }

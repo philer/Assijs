@@ -8,15 +8,23 @@
     this.$elem = $elem instanceof $ ? $elem : $($elem);
     this.wordLength = wordLength;
     this.intStrLen = wordLength / Cell._intBaseLog2;
-    // this.editable = editable === undefined || editable;
-    // if (this.editable) {
-    //   this.$elem
-    //     .attr("contenteditable", true)
-    //     .on("DOMSubtreeModified", function(evt) {
-    //       _this.set(_this.$elem.text());
-    //     });
-    //   ;
-    // }
+    
+    this.editable = editable === undefined || editable;
+    if (this.editable) {
+      this.$elem[0].contentEditable = true;
+      
+      this.$elem
+        .on("blur", function() {
+          _this.set(_this.$elem.text().trim());
+        })
+        .on("keydown", function(evt) {
+          if (evt.keyCode === 13) {
+            _this.$elem.blur();
+          }
+        })
+        ;
+    }
+    
     
     this.set(initValue);
     instances.add(this, true);
@@ -32,7 +40,7 @@
     },
     
     set: function(val, force) {
-      if (this.value !== val || force) {
+      if (force || this.value !== val && this.value !== +val) {
         this.oldValue = this.value;
         this.value = $.isNumeric(val) ? this.fixInt(val) : val;
         this.updated = true;
