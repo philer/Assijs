@@ -9,8 +9,10 @@
   BooleanCell.prototype = $.extend(Object.create(Cell.prototype), {
     
     _updateView: function() {
-      this.$elem.addClass('updated')[0].checked = this.value;
+      this.$elem[0].checked = this.value;
     },
+    
+    clearHighlights: function() {},
     
   });
   

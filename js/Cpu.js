@@ -56,7 +56,7 @@ var Cpu = (function($, undefined) {
     // this.one      = $.fn.one.bind($this);
     // this._trigger = $.fn.trigger.bind($this);
     
-    this._clearHighlighted();
+    this._clearUpdated();
   }
   
   Cpu.prototype = EventsTrait({
@@ -79,8 +79,9 @@ var Cpu = (function($, undefined) {
     
     step: function(keepHighlights) {
       
-      if (keepHighlights !== true) {
-        this._clearHighlighted();
+      this._clearUpdated();
+      if (!keepHighlights) {
+        this._clearHighlights();
       }
       
       switch (this._step = (this._step + 1) % 4) {
@@ -106,7 +107,7 @@ var Cpu = (function($, undefined) {
         case 3:
           var hold = this._currentOperation.callback.call(this, this.argument.get());
           if (hold) {
-            return this.stop();
+            this.stop();
           } else {
             this._updateFlags();
           }
@@ -124,28 +125,55 @@ var Cpu = (function($, undefined) {
     },
     
     opStep: function() {
-      this._clearHighlighted();
+      this._clearHighlights();
       this.running = true;
       this.step(true);
-      while (this.running && this._step < 3) {
+      while (this.running && this._step !== 3) {
         this.step(true);
       }
       this.running = false;
     },
     
     fastForward: function() {
+      this._clearHighlights();
       this.running = true;
       while (this.running) {
-        this.step();
+        this.step(true);
       }
     },
     
-    undo: function() {
+    back: function(keepHighlights) {
+      this._clearUpdated();
+      if (!keepHighlights) {
+        this._clearHighlights();
+      }
+      
       this._step = (this._step + 3) % 4;
-      var step = this.log.pop();
-      step.map(function(updated) {
-        updated.memoryCell.set(updated.before);
+      var updatedMemory = this.log.pop();
+      updatedMemory.map(function(update) {
+        update.memoryCell.set(update.before);
       });
+    },
+    
+    opBack: function() {
+      this._clearHighlights();
+      this.back(true);
+      while (this._step !== 3) {
+        this.back(true);
+      }
+    },
+    
+    reset: function() {
+      this.stop();
+      this.accumulator.set(0);
+      this.counter.set(0);
+      this.operation.set(0);
+      this.argument.set(0);
+      this.nFlag.set(false);
+      this.zFlag.set(false);
+      this._step = -1;
+      this.log = [];
+      return this._clearUpdated()._clearHighlights();
     },
     
     /**
@@ -170,22 +198,15 @@ var Cpu = (function($, undefined) {
       return this;
     },
     
-    _clearHighlighted: function() {
+    _clearUpdated: function() {
       this.registers.clearAccessed().clearUpdated();
       this.memory.clearAccessed().clearUpdated();
+      return this;
     },
     
-    reset: function() {
-      this.stop();
-      this.accumulator.set(0);
-      this.counter.set(0);
-      this.operation.set(0);
-      this.argument.set(0);
-      this.nFlag.set(false);
-      this.zFlag.set(false);
-      this._step = -1;
-      this.log = [];
-      this._clearHighlighted();
+    _clearHighlights: function() {
+      this.registers.clearHighlights();
+      this.memory.clearHighlights();
       return this;
     },
     

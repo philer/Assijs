@@ -67,7 +67,6 @@
     clearAccessed: function() {
       this.getAccessed().each(function(cell) {
         cell.accessed = false;
-        cell.$elem.removeClass('accessed');
       });
       return this;
     },
@@ -75,9 +74,14 @@
     clearUpdated: function() {
       this.getUpdated().each(function(cell) {
         cell.updated = false;
-        cell.$elem.removeClass('updated');
       });
       return this;
+    },
+    
+    clearHighlights: function() {
+      this.each(function(cell) {
+        cell.clearHighlights();
+      });
     },
     
   };

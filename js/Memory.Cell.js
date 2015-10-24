@@ -49,6 +49,10 @@
           ;
     },
     
+    clearHighlights: function() {
+      this.$elem.removeClass('updated accessed');
+    },
+    
     increment: function(amount) {
       this.set(this.get() + (amount === undefined ? 1 : amount));
     },

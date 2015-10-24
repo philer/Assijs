@@ -53,7 +53,8 @@
   });
   
   $('.cpu-reset').click(cpu.reset.bind(cpu));
-  $('.cpu-step-backward').click(cpu.undo.bind(cpu));
+  $('.cpu-op-step-backward').click(cpu.opBack.bind(cpu));
+  $('.cpu-step-backward').click(cpu.back.bind(cpu));
   $('.cpu-step-forward').click(cpu.step.bind(cpu));
   $('.cpu-op-step-forward').click(cpu.opStep.bind(cpu));
   $('.cpu-fast-forward').click(cpu.fastForward.bind(cpu));
