@@ -22,22 +22,14 @@ var Cpu = (function($, undefined) {
     this.step  = this.step.bind(this);
     
     // this.$cpu = $cpu;
-    this.accumulator = new Memory.Cell($('.accumulator', $cpu), conf.wordLength, 0);
-    this.counter     = new Memory.Cell($('.counter',     $cpu), conf.wordLength, 0);
-    this.operation   = new Memory.Cell($('.operation',   $cpu), conf.wordLength, 0);
-    this.argument    = new Memory.Cell($('.argument',    $cpu), conf.wordLength, 0);
-    this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), conf.wordLength, false);
-    this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), conf.wordLength, false);
-    this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), conf.wordLength, false);
-    
     this.registers = new Memory.Aggregate([
-      this.accumulator,
-      this.counter,
-      this.operation,
-      this.argument,
-      this.nFlag,
-      this.zFlag,
-      this.vFlag,
+      this.accumulator = new Memory.Cell($('.accumulator', $cpu), conf.wordLength, 0),
+      this.counter     = new Memory.Cell($('.counter',     $cpu), conf.wordLength, 0),
+      this.operation   = new Memory.Cell($('.operation',   $cpu), conf.wordLength, 0),
+      this.argument    = new Memory.Cell($('.argument',    $cpu), conf.wordLength, 0),
+      this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), conf.wordLength, false),
+      this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), conf.wordLength, false),
+      this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), conf.wordLength, false),
     ]);
     
     /**
@@ -56,7 +48,7 @@ var Cpu = (function($, undefined) {
     // this.one      = $.fn.one.bind($this);
     // this._trigger = $.fn.trigger.bind($this);
     
-    this._clearUpdated();
+    this._clearUpdated()._clearHighlights();
   }
   
   Cpu.prototype = EventsTrait({

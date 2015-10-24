@@ -29,11 +29,16 @@ var Assembler = (function() {
     
     
     parse: function(text) {
+      return this.parselines(text.split("\n"));
+    },
+    
+    parseLines: function(lines) {
       var prog = []
         , addr = 0
         , labels = Object.create(null)
-        , lines = this.getLines(text)
         ;
+      
+      lines = lines.map(this.trimComments, this);
       
       for (var l = 0, len = lines.length ; l < len ; ++l) {
         var line = lines[l];
@@ -81,17 +86,6 @@ var Assembler = (function() {
       });
       
       return prog;
-    },
-    
-    /**
-     * split filecontents into an array of lines,
-     * removing empty lines and comments after '#'
-     * 
-     * @param  {string} text
-     * @return {array}           array of strings
-     */
-    getLines: function(text) {
-      return text.split("\n").map(this.trimComments, this);
     },
     
     /**

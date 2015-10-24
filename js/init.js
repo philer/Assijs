@@ -23,9 +23,11 @@
   
   // editor UI
   
+  var editor = new Editor($('.editor'));
+  
   $('.assemble').click(function() {
     try {
-      var program = assembler.parse($('.editor textarea').val());
+      var program = assembler.parseLines(editor.getLines());
     } catch (e) {
       if (e instanceof Assembler.ParseException) {
         $('.errors').text(e.message);

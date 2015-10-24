@@ -13,7 +13,7 @@
   </head>
   <body>
     
-    <section class="window cpu">
+    <section class="window cpu-window">
       <h2>CPU</h2>
       <nav class="controls">
         <a class="button cpu-reset"><i class="fa fa-fw fa-fast-backward"></i></a
@@ -25,25 +25,28 @@
         ><a class="button cpu-fast-forward"><i class="fa fa-fw fa-fast-forward"></i></a>
         <input class="cpu-speed" type="range" min="0" max="1000" value="1000" step="10" />
       </nav>
-      <dl>
-        <dt>Counter</dt><dd class="counter"></dd>
-        <dt>Operation</dt><dd class="operation"></dd>
-        <dt>Argument</dt><dd class="argument"></dd>
-        <dt>Accumulator</dt><dd class="accumulator"></dd>
-      </dl>
       
-      <div>
-        <input type="checkbox" id="z-flag" disabled="true"
-        /><label for="z-flag">Z</label
-        ><input type="checkbox" id="n-flag" disabled="true"
-        /><label for="n-flag">N</label
-        ><input type="checkbox" id="v-flag" disabled="true"
-        /><label for="v-flag">V</label>
+      <div class="cpu scrollbox">
+        <dl>
+          <dt>Counter</dt><dd class="counter"></dd>
+          <dt>Operation</dt><dd class="operation"></dd>
+          <dt>Argument</dt><dd class="argument"></dd>
+          <dt>Accumulator</dt><dd class="accumulator"></dd>
+        </dl>
+        
+        <div>
+          <input type="checkbox" id="z-flag" disabled="true"
+          /><label for="z-flag">Z</label
+          ><input type="checkbox" id="n-flag" disabled="true"
+          /><label for="n-flag">N</label
+          ><input type="checkbox" id="v-flag" disabled="true"
+          /><label for="v-flag">V</label>
+        </div>
       </div>
       <div class="cpu-log" style="position:absolute;top:1.33em;right:1.33em;font-size:.75em"></div>
     </section>
     
-    <section class="window memory">
+    <section class="window memory-window">
       <header>
         <h2>Memory</h2>
         <nav class="controls">
@@ -58,7 +61,7 @@
         </nav>
       </header>
       
-      <div class="scrollbox">
+      <div class="memory scrollbox">
         <table>
           <thead></thead>
           <tbody></tbody>
@@ -67,7 +70,7 @@
     </section>
     
     
-    <section class="window editor">
+    <section class="window editor-window">
       <header>
         <h2>Editor</h2>
         <nav class="controls">
@@ -75,9 +78,9 @@
         </nav>
       </header>
       
-      <div class="scrollbox">
-        <textarea>
-heron:
+      <div class="editor scrollbox">
+        <div class="editor-gutter"></div>
+        <div class="editor-textarea" contenteditable="true">heron:
     LOADI 49
     STORE 100
 
@@ -115,7 +118,7 @@ HOLD
 #    ADDI 1
 #    STORE 53
 #    HOLD
-</textarea>
+</div>
       </div>
     </section>
     
@@ -136,6 +139,8 @@ HOLD
     <script src="js/Memory.PrimaryStorage.js"></script>
     <script src="js/Cpu.js"></script>
     <script src="js/Assembler.js"></script>
+    
+    <script src="js/Editor.js"></script>
     
     <script src="config.js"></script>
     <script src="js/operations.js"></script>
