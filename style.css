@@ -7,16 +7,18 @@ html, body {
   padding: 0;
   height: 100%;
   width: 100%;
-  font-family: 'Liberation mono', monospace;
+  font-family: monospace;
   font-size: 14px;
-  line-height: 1.3em;
+  /*line-height: 1.3em;*/
 }
 h2 {
   /*font-size: 1.1em;*/
   margin: 0;
 }
-h2, nav, .button {
+h2, nav, .button, .fa {
   display: inline-block;
+  vertical-align: middle;
+  /*vertical-align: bottom;*/
 }
 
 dl {
@@ -92,11 +94,11 @@ dd:after {
   left: 50%;
   top: 15em;
   border-top: 2px solid #333;
-  font-size: .9em;
 }
 .memory table {
   table-layout: static;
   width: 100%;
+  font-size: .9em;
   text-align: right;
   border-collapse: collapse;
 }
@@ -142,6 +144,7 @@ body {
   padding: .3em .5em;
   margin: .5em 0;
   border-width: 0;
+  /*line-height: 1em;vertical-align:middle;*/
   font-weight: bold;
   background-color: #0aa;
   color: white;
@@ -157,8 +160,8 @@ body {
 input[type="range"] {
   padding: .3em .5em;
   margin: .5em 0;
-  height: 2.1em;
-  vertical-align: middle;
+  height: 1.9em;
+  vertical-align: bottom;
   background-color: #0aa;
   color: white;
   border-radius: 2px;
@@ -188,6 +191,7 @@ input[type="radio"] + label {
   display: inline-block;
   padding: .3em .5em;
   margin: .5em 0;
+  vertical-align: middle;
   background-color: #444;
   color: #ccc;
 }
