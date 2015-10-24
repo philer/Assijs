@@ -117,6 +117,7 @@ var Cpu = (function($, undefined) {
     },
     
     opStep: function() {
+      this.stop();
       this._clearHighlights();
       this.running = true;
       this.step(true);
@@ -127,6 +128,7 @@ var Cpu = (function($, undefined) {
     },
     
     fastForward: function() {
+      this.stop();
       this._clearHighlights();
       this.running = true;
       while (this.running) {
@@ -135,6 +137,7 @@ var Cpu = (function($, undefined) {
     },
     
     back: function(keepHighlights) {
+      this.stop();
       this._clearUpdated();
       if (!keepHighlights) {
         this._clearHighlights();
@@ -148,6 +151,7 @@ var Cpu = (function($, undefined) {
     },
     
     opBack: function() {
+      this.stop();
       this._clearHighlights();
       this.back(true);
       while (this._step !== 3) {
