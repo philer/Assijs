@@ -39,6 +39,14 @@
       return this;
     },
     
+    map: function(fn) {
+      var results = new Array(this.cells.length);
+      for (var i = 0, len = this.cells.length ; i < len ; ++i) {
+        results[i] = fn.call(this, this.cells[i]);
+      }
+      return results;
+    },
+    
     all: function() {
       return this.cells.slice();
     },

@@ -52,11 +52,11 @@
     $cpuPlayPauseIcon.removeClass('fa-pause').addClass('fa-play');
   });
   
-  $('.cpu-step-forward').click(cpu.step.bind(cpu));
-  
-  $('.cpu-fast-forward').click(cpu.opStep.bind(cpu));
-  
   $('.cpu-reset').click(cpu.reset.bind(cpu));
+  $('.cpu-step-backward').click(cpu.undo.bind(cpu));
+  $('.cpu-step-forward').click(cpu.step.bind(cpu));
+  $('.cpu-op-step-forward').click(cpu.opStep.bind(cpu));
+  $('.cpu-fast-forward').click(cpu.fastForward.bind(cpu));
   
   $('.cpu-speed').change(function() {
     cpu.setSpeed(this.value);

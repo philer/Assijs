@@ -78,6 +78,10 @@
   // public static
   $.extend(Cell, {
     
+    getUpdated: function() {
+      return instances.getUpdated();
+    },
+    
     // getUpdated: function() {
     //   return updated.copy();
     // },
