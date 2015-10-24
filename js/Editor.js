@@ -2,6 +2,10 @@ var Editor = (function($, undefined) {
   
   "use strict";
   
+  var brRegex = /<br\/?>(?:<\/br>)?|<\/div><div>/g
+    , breakRegex = /\n|<br\/?>(?:<\/br>)?/
+    ;
+  
   function Editor($elem) {
       this.$elem     = $elem;
       this.$gutter   = $('.editor-gutter',   $elem);
@@ -34,11 +38,16 @@ var Editor = (function($, undefined) {
     },
     
     getText: function() {
-      return this.$textarea.html().replace('<br>', "\n");
+      var text = this.$textarea.html().replace(brRegex, "\n");
+      // weird hack: css pre apparently hides the last linebreak
+      if (text.charAt(text.length - 1) === "\n") {
+        text = text.slice(0, -1);
+      }
+      return text;
     },
     
     getLines: function() {
-      return this.$textarea.html().split(/\n|<br>/).slice(0, -1);
+      return this.getText().split("\n");
     },
     
     updateGutter: function() {
