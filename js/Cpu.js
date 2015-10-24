@@ -3,15 +3,14 @@ var Cpu = (function($, undefined) {
   "use strict";
   
   function Cpu($cpu, mem, ops, conf) {
-    var _this = this
-      , $this = $(this)
-      ;
+    var _this = this;
     
     this.memory = mem;
     
     this.operations = Object.create(null);
     for (var op in ops) {
       if (ops.hasOwnProperty(op)) {
+        ops[op].name = op;
         this.operations[ops[op].code] = ops[op];
       }
     }
@@ -22,13 +21,23 @@ var Cpu = (function($, undefined) {
     this.step = this.step.bind(this);
     
     // this.$cpu = $cpu;
-    this.accumulator = new MemoryCell($('.accumulator',      $cpu), conf.wordLength, 0);
-    this.counter     = new MemoryCell($('.counter',   $cpu), conf.wordLength, 0);
-    this.operation   = new MemoryCell($('.operation', $cpu), conf.wordLength, 0);
-    this.argument    = new MemoryCell($('.argument',  $cpu), conf.wordLength, 0);
-    this.nFlag       = new MemoryCell($('.n-flag',    $cpu), conf.wordLength, false);
-    this.zFlag       = new MemoryCell($('.z-flag',    $cpu), conf.wordLength, false);
-    this.vFlag       = new MemoryCell($('.v-flag',    $cpu), conf.wordLength, false);
+    this.accumulator = new Memory.Cell($('.accumulator',      $cpu), conf.wordLength, 0);
+    this.counter     = new Memory.Cell($('.counter',   $cpu), conf.wordLength, 0);
+    this.operation   = new Memory.Cell($('.operation', $cpu), conf.wordLength, 0);
+    this.argument    = new Memory.Cell($('.argument',  $cpu), conf.wordLength, 0);
+    this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), conf.wordLength, false);
+    this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), conf.wordLength, false);
+    this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), conf.wordLength, false);
+    
+    this.registers = new Memory.Aggregate([
+      this.accumulator,
+      this.counter,
+      this.operation,
+      this.argument,
+      this.nFlag,
+      this.zFlag,
+      this.vFlag,
+    ]);
     
     /**
      * Automatically set overflow flag according to new accumulator value
@@ -39,17 +48,17 @@ var Cpu = (function($, undefined) {
       if (val !== this.fixInt(val)) {
         _this.vFlag.set(true);
       }
-      MemoryCell.prototype.set.call(this, val);
+      Memory.Cell.prototype.set.call(this, val);
     };
     
-    this.on       = $.fn.on.bind($this);
-    this.one      = $.fn.one.bind($this);
-    this._trigger = $.fn.trigger.bind($this);
+    // this.on       = $.fn.on.bind($this);
+    // this.one      = $.fn.one.bind($this);
+    // this._trigger = $.fn.trigger.bind($this);
     
-    MemoryCell.clearHighlights();
+    this._clearHighlighted();
   }
   
-  Cpu.prototype = {
+  Cpu.prototype = EventsTrait({
     
     start: function() {
       this.intervalId = setInterval(this.step, this.delay);
@@ -59,7 +68,7 @@ var Cpu = (function($, undefined) {
     stop: function() {
       clearInterval(this.intervalId);
       this.intervalId = false;
-      this._trigger('hold');
+      this.trigger('hold');
       return this;
     },
     
@@ -73,19 +82,19 @@ var Cpu = (function($, undefined) {
         // microstep 2
         this.argument.set(this.memory.get(this.counter.get()));
         
-        MemoryCell.clearHighlights();
+        this._clearHighlighted();
         
         // microstep 3
         var op = this.operations[this.operation.get()];
-        
         if (!op) {
           return this._fail('Unknown opcode ' + this.operation.get());
           // throw new Cpu.RuntimeException('Unknown opcode ' + this.operation.get());
         }
+        this.operation.set(op.name);
         
-        if (op.opString) {
-          $('.cpu-log').append('<div>' + op.opString.call(this, this.argument.get()) + "</div>");
-        }
+        // if (op.opString) {
+        //   $('.cpu-log').append('<div>' + op.opString.call(this, this.argument.get()) + "</div>");
+        // }
         
         // microstep 4
         var hold = op.callback.call(this, this.argument.get());
@@ -129,6 +138,11 @@ var Cpu = (function($, undefined) {
       return this;
     },
     
+    _clearHighlighted: function() {
+      this.registers.clearAccessed().clearUpdated();
+      this.memory.clearAccessed().clearUpdated();
+    },
+    
     reset: function() {
       this.stop();
       this.accumulator.set(0);
@@ -137,7 +151,7 @@ var Cpu = (function($, undefined) {
       this.argument.set(0);
       this.nFlag.set(false);
       this.zFlag.set(false);
-      MemoryCell.clearHighlights();
+      this._clearHighlighted();
       return this;
     },
     
@@ -156,7 +170,7 @@ var Cpu = (function($, undefined) {
       return this.stop();
     },
     
-  };
+  });
   
   // Cpu.RuntimeException = Error;
   

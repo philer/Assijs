@@ -21,13 +21,20 @@
         <button class="cpu-reset"><i class="fa fa-fw fa-stop"></i></button>
         <input class="cpu-speed" type="range" min="0" max="1000" value="1000" step="10" />
       </nav>
-      <div>Accumulator: <span class="accumulator"></span></div>
-      <div>Counter:     <span class="counter"></span></div>
-      <div>Operation:   <span class="operation"></span></div>
-      <div>Argument:    <span class="argument"></span></div>
-      <div>Z:           <span class="z-flag"></span></div>
-      <div>N:           <span class="n-flag"></span></div>
-      <div>V:           <span class="v-flag"></span></div>
+      <dl>
+        <dt>Accumulator</dt><dd class="accumulator"></dd>
+        <dt>Counter</dt><dd class="counter"></dd>
+        <dt>Operation</dt><dd class="operation"></dd>
+        <dt>Argument</dt><dd class="argument"></dd>
+      </dl>
+      
+      <div><input type="checkbox" id="z-flag" disabled="true"
+        /><label for="z-flag">Z</label
+        ><input type="checkbox" id="n-flag" disabled="true"
+        /><label for="n-flag">N</label
+        ><input type="checkbox" id="v-flag" disabled="true"
+        /><label for="v-flag">V</label
+        ></div>
       <div class="cpu-log" style="position:absolute;top:1.33em;right:1.33em;font-size:.75em"></div>
     </section>
     
@@ -44,21 +51,7 @@
       
       <div class="scrollbox">
         <table>
-          <thead>
-            <tr>
-              <td></td>
-              <th>+0</th>
-              <th>+1</th>
-              <th>+2</th>
-              <th>+3</th>
-              <th>+4</th>
-              <th>+5</th>
-              <th>+6</th>
-              <th>+7</th>
-              <th>+8</th>
-              <th>+9</th>
-            </tr>
-          </thead>
+          <thead></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -124,14 +117,19 @@ overflow:
     <!-- // <script src="../cdn/jquery-2.1.3.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     
+    <script src="js/EventsTrait.js"></script>
+    
+    <script src="js/Memory.js"></script>
+    <script src="js/Memory.Aggregate.js"></script>
+    <!-- // <script src="js/Memory.AwareAggregate.js"></script> -->
+    <script src="js/Memory.Cell.js"></script>
+    <script src="js/Memory.BooleanCell.js"></script>
+    <script src="js/Memory.PrimaryStorage.js"></script>
+    <script src="js/Cpu.js"></script>
+    <script src="js/Assembler.js"></script>
+    
     <script src="config.js"></script>
-    <script src="js/memory_cell.js"></script>
-    <script src="js/memory.js"></script>
-    <script src="js/cpu.js"></script>
-    
     <script src="js/operations.js"></script>
-    <script src="js/assembler.js"></script>
-    
     <script src="js/init.js"></script>
   </body>
 </html>

@@ -4,7 +4,7 @@
   
   // init
   
-  var memory = new Memory(
+  var memory = new Memory.PrimaryStorage(
       $('.memory')
     , conf
   );

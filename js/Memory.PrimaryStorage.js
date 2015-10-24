@@ -1,8 +1,8 @@
-var Memory = (function($) {
+(function(Memory, Aggregate, $) {
   
   "use strict";
   
-  function Memory($elem, conf) {
+  function PrimaryStorage($elem, conf) {
     var lines = conf.memory.lines
       , cols = conf.memory.columns
       ;
@@ -15,12 +15,12 @@ var Memory = (function($) {
     
     this.cells = new Array(this.length);
     for (var addr = this.length ; 0 <= --addr ;) {
-      this.cells[addr] = new MemoryCell('.memcell-' + addr, conf.wordLength, 0);
+      this.cells[addr] = new Memory.Cell('.memcell-' + addr, conf.wordLength, 0);
     }
     
   }
   
-  Memory.prototype = {
+  PrimaryStorage.prototype = $.extend(Object.create(Aggregate.prototype), {
     
     initUi: function(lines, cols) {
       var addr, html;
@@ -76,8 +76,8 @@ var Memory = (function($) {
       }
     }
     
-  };
+  });
   
-  return Memory;
+  Memory.PrimaryStorage = PrimaryStorage;
   
-})(jQuery);
+})(Memory, Memory.Aggregate, jQuery);
