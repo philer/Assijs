@@ -13,6 +13,15 @@ var Editor = (function($, undefined) {
   
   Editor.prototype = {
     
+    save: function() {
+      var blob = new Blob([this.getText()], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "assijs.txt");
+    },
+    
+    getText: function() {
+      return this.$textarea.html().replace('<br>', "\n");
+    },
+    
     getLines: function() {
       return this.$textarea.html().split(/\n|<br>/).slice(0, -1);
     },

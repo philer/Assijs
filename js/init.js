@@ -25,7 +25,9 @@
   
   var editor = new Editor($('.editor'));
   
-  $('.assemble').click(function() {
+  $('.editor-save').click(editor.save.bind(editor));
+  
+  $('.editor-assemble').click(function() {
     try {
       var program = assembler.parseLines(editor.getLines());
     } catch (e) {
