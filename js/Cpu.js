@@ -5,6 +5,8 @@ var Cpu = (function($, undefined) {
   function Cpu($cpu, mem, ops, conf) {
     var _this = this;
     
+    this.wordLength = conf.wordLength;
+    
     this.memory = mem;
     
     this.operations = Object.create(null);
@@ -23,13 +25,13 @@ var Cpu = (function($, undefined) {
     
     // this.$cpu = $cpu;
     this.registers = new Memory.Aggregate([
-      this.accumulator = new Memory.Cell($('.accumulator', $cpu), conf.wordLength, 0),
-      this.counter     = new Memory.Cell($('.counter',     $cpu), conf.wordLength, 0),
-      this.operation   = new Memory.Cell($('.operation',   $cpu), conf.wordLength, 0),
-      this.argument    = new Memory.Cell($('.argument',    $cpu), conf.wordLength, 0),
-      this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), conf.wordLength, false),
-      this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), conf.wordLength, false),
-      this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), conf.wordLength, false),
+      this.accumulator = new Memory.Cell($('.accumulator', $cpu), this.wordLength, 0),
+      this.counter     = new Memory.Cell($('.counter',     $cpu), this.wordLength, 0),
+      this.operation   = new Memory.Cell($('.operation',   $cpu), this.wordLength, 0),
+      this.argument    = new Memory.Cell($('.argument',    $cpu), this.wordLength, 0),
+      this.nFlag = new Memory.BooleanCell($('#n-flag', $cpu), this.wordLength, false),
+      this.zFlag = new Memory.BooleanCell($('#z-flag', $cpu), this.wordLength, false),
+      this.vFlag = new Memory.BooleanCell($('#v-flag', $cpu), this.wordLength, false),
     ]);
     
     /**

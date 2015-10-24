@@ -63,9 +63,11 @@
     
     fixInt: function(int) {
       
-      // JS converts to 32bit int when bit shifting.
+      // JS converts to 32bit signed int when bit shifting.
       // We simulate n bit integers by chopping off overflow
-      // by shifting left by n and back again
+      // by shifting left by n and back again.
+      // The sign propagating right shift >> ensures our sign
+      // remains intact
       return int << 32 - this.wordLength >> 32 - this.wordLength;
     },
     

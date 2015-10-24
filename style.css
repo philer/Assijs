@@ -105,7 +105,7 @@ dd:after {
 .memory table td,
 .memory table th {
   width: 9.09%;
-  border: 1px solid #333;
+  border: 1px solid #444;
   padding: 0 .2em;
   white-space: nowrap;
 }

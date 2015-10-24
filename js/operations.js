@@ -209,4 +209,107 @@ var OPERATIONS = {
     },
   },
   
+  // Bitwise
+  
+  AND: {
+    code: 220,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() & this.memory.get(addr));
+    },
+  },
+  
+  ANDI: {
+    code: 221,
+    callback: function(val) {
+      this.accumulator.set(this.accumulator.get() & +val);
+    },
+  },
+  
+  OR: {
+    code: 222,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() | this.memory.get(addr));
+    },
+  },
+  
+  ORI: {
+    code: 223,
+    callback: function(val) {
+      this.accumulator.set(this.accumulator.get() | +val);
+    },
+  },
+  
+  XOR: {
+    code: 224,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() ^ this.memory.get(addr));
+    },
+  },
+  
+  XORI: {
+    code: 225,
+    callback: function(val) {
+      this.accumulator.set(this.accumulator.get() ^ +val);
+    },
+  },
+  
+  NOT: {
+    code: 226,
+    callback: function() {
+      this.accumulator.set(~this.accumulator.get());
+    },
+  },
+  
+  SHL: {
+    code: 227,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() << this.memory.get(addr));
+    },
+  },
+  
+  SHLI: {
+    code: 228,
+    callback: function(val) {
+      this.accumulator.set(this.accumulator.get() << +val);
+    },
+  },
+  
+  SHR: {
+    code: 229,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() >>> this.memory.get(addr));
+    },
+  },
+  
+  SHRI: {
+    code: 230,
+    callback: function(val) {
+      
+      // The sign-propagating right shift >>> doesn't work by itself,
+      // since we are chopping of bits to the left it is not propagating
+      // the correct bit. To get the correct sign-propagation we first shift
+      // everything to the far left, do our operation and then shift back.
+      this.accumulator.set(
+        this.accumulator.get()
+          << 32 - this.wordLength
+          >>> +val
+          >> 32 - this.wordLength
+      );
+    },
+  },
+  
+  SHRA: {
+    code: 231,
+    callback: function(addr) {
+      this.accumulator.set(this.accumulator.get() >> this.memory.get(addr));
+    },
+  },
+  
+  SHRAI: {
+    code: 232,
+    callback: function(val) {
+      this.accumulator.set(this.accumulator.get() >> +val);
+    },
+  },
+  
 };
