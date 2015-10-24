@@ -16,25 +16,26 @@
     <section class="window cpu">
       <h2>CPU</h2>
       <nav class="controls">
-        <button class="cpu-playpause"><i class="fa fa-fw fa-play"></i></button>
-        <button class="cpu-step-forward"><i class="fa fa-fw fa-step-forward"></i></button>
-        <button class="cpu-reset"><i class="fa fa-fw fa-stop"></i></button>
+        <a class="button cpu-reset"><i class="fa fa-fw fa-fast-backward"></i></a
+        ><a class="button cpu-playpause"><i class="fa fa-fw fa-play"></i></a
+        ><a class="button cpu-step-forward"><i class="fa fa-fw fa-step-forward"></i></a>
         <input class="cpu-speed" type="range" min="0" max="1000" value="1000" step="10" />
       </nav>
       <dl>
-        <dt>Accumulator</dt><dd class="accumulator"></dd>
         <dt>Counter</dt><dd class="counter"></dd>
         <dt>Operation</dt><dd class="operation"></dd>
         <dt>Argument</dt><dd class="argument"></dd>
+        <dt>Accumulator</dt><dd class="accumulator"></dd>
       </dl>
       
-      <div><input type="checkbox" id="z-flag" disabled="true"
+      <div>
+        <input type="checkbox" id="z-flag" disabled="true"
         /><label for="z-flag">Z</label
         ><input type="checkbox" id="n-flag" disabled="true"
         /><label for="n-flag">N</label
         ><input type="checkbox" id="v-flag" disabled="true"
-        /><label for="v-flag">V</label
-        ></div>
+        /><label for="v-flag">V</label>
+      </div>
       <div class="cpu-log" style="position:absolute;top:1.33em;right:1.33em;font-size:.75em"></div>
     </section>
     
@@ -42,10 +43,14 @@
       <header>
         <h2>Memory</h2>
         <nav class="controls">
-          <button class="memory-clear">Clear</button>
-          <button class="memory-dec active">Dec</button>
-          <button class="memory-hex">Hex</button>
-          <button class="memory-bin">Bin</button>
+          <a class="button memory-clear">Clear</a>
+          
+          <input type="radio" name="memory-base" value="10" class="memory-base" id="memory-dec" checked="checked"
+          /><label for="memory-dec">Dec</label
+          ><input type="radio" name="memory-base" value="16" class="memory-base" id="memory-hex"
+          /><label for="memory-hex">Hex</label
+          ><input type="radio" name="memory-base" value="2" class="memory-base" id="memory-bin"
+          /><label for="memory-bin">Bin</label>
         </nav>
       </header>
       
@@ -62,7 +67,7 @@
       <header>
         <h2>Editor</h2>
         <nav class="controls">
-          <button class="assemble">Assemble</button>
+          <a class="button assemble">Assemble</a>
         </nav>
       </header>
       

@@ -18,6 +18,9 @@ h2, nav, button {
   display: inline-block;
 }
 
+dl {
+  margin: 0;
+}
 dt, dd {
   /*position: relative;*/
   display: block;
@@ -83,6 +86,16 @@ dd:after {
   left: 50%;
   height: 15em;
 }
+.cpu .controls .button { border-radius: 0; }
+.cpu .controls .button:first-of-type {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+.cpu .controls .button:last-of-type {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
 .memory {
   left: 50%;
   top: 15em;
@@ -132,11 +145,11 @@ body {
 }
 
 
-button {
+.button {
+  display: inline-block;
   padding: .3em .5em;
   margin: .5em 0;
   border-width: 0;
-  line-height: inherit;
   font-weight: bold;
   background-color: #0aa;
   color: white;
@@ -144,9 +157,9 @@ button {
   cursor: pointer;
   transition: color .3s, background-color .3s;
 }
-button:hover,
-button:focus,
-button:active {
+.button:hover,
+.button:focus,
+.button:active {
   background-color: #0cc;
 }
 input[type="range"] {
@@ -174,20 +187,39 @@ input[type="radio"] {
   width: 0;
   height: 0;
 }
+label {
+  cursor: pointer;
+  transition: color .3s, background-color .3s;
+}
 input[type="checkbox"] + label,
 input[type="radio"] + label {
+  display: inline-block;
   padding: .3em .5em;
   margin: .5em 0;
-  height: 2.3em;
-  vertical-align: middle;
   background-color: #444;
   color: #ccc;
-  /*border-radius: 2px;*/
+}
+input[type="checkbox"]:not([disabled]) + label:hover,
+input[type="checkbox"]:not([disabled]) + label:focus,
+input[type="radio"]:not([disabled]) + label:hover,
+input[type="radio"]:not([disabled]) + label:focus {
+  background-color: #0cc;
+  color: white;
 }
 input[type="checkbox"]:checked + label,
 input[type="radio"]:checked + label {
-  background-color: #0c6;
+  cursor: default;
+  pointer-events: none;
+  background-color: #0aa;
   color: white;
+}
+input[type="checkbox"][disabled] + label,
+input[type="radio"][disabled] + label {
+  cursor: default;
+}
+input[type="checkbox"][disabled]:checked + label,
+input[type="radio"][disabled]:checked + label {
+  background-color: #0c6;
 }
 input[type="checkbox"] + label:first-of-type,
 input[type="radio"] + label:first-of-type {

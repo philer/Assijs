@@ -67,22 +67,14 @@
     memory.clear();
   });
   
-  $('.memory-dec').click(function() {
-    MemoryCell.setDisplayBase(10);
-    $('.memory-hex, .memory-bin').removeClass('active');
-    $(this).addClass('active')
+  $('.memory-base').change(function() {
+    switch (this.value) {
+      case "16": Memory.Cell.hex(); break;
+      case  "2": Memory.Cell.bin(); break;
+      default: Memory.Cell.setDisplayBase(10); break;
+    }
   });
+  $('.memory-base:checked').change();
   
-  $('.memory-hex').click(function() {
-    MemoryCell.hex();
-    $('.memory-dec, .memory-bin').removeClass('active');
-    $(this).addClass('active')
-  });
-  
-  $('.memory-bin').click(function() {
-    MemoryCell.bin();
-    $('.memory-dec, .memory-hex').removeClass('active');
-    $(this).addClass('active')
-  });
   
 })(jQuery, CONFIG, OPERATIONS);
