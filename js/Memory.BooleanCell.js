@@ -8,6 +8,13 @@
   
   BooleanCell.prototype = $.extend(Object.create(Cell.prototype), {
     
+    _setupEditable: function() {
+      var _this = this;
+      this.$elem.change(function(evt) {
+        _this.set(this.value);
+      });
+    },
+    
     _updateView: function() {
       this.$elem[0].checked = this.value;
     },

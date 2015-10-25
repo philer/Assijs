@@ -6,23 +6,13 @@
     var _this = this;
     
     this.$elem = $elem instanceof $ ? $elem : $($elem);
+    this.$elem.addClass('memory-cell');
     this.wordLength = wordLength;
     this.intStrLen = wordLength / Cell._intBaseLog2;
     
     this.editable = editable === undefined || editable;
     if (this.editable) {
-      this.$elem[0].contentEditable = true;
-      
-      this.$elem
-        .on("blur", function() {
-          _this.set(_this.$elem.text().trim());
-        })
-        .on("keydown", function(evt) {
-          if (evt.keyCode === 13) {
-            _this.$elem.blur();
-          }
-        })
-        ;
+      this._setupEditable();
     }
     
     this.set(initValue);
@@ -44,6 +34,22 @@
         this.updated = true;
         this._updateView();
       }      
+    },
+    
+    _setupEditable: function() {
+      var _this = this;
+      this.$elem[0].contentEditable = true;
+      this.$elem
+        .on("blur", function() {
+          _this.set(_this.$elem.text().trim());
+        })
+        .on("keydown", function(evt) {
+          console.log(evt);
+          if (evt.keyCode === 13) {
+            _this.$elem.blur();
+          }
+        })
+        ;
     },
     
     _updateView: function() {

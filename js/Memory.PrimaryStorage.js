@@ -15,7 +15,7 @@
     
     this.cells = new Array(this.length);
     for (var addr = this.length ; 0 <= --addr ;) {
-      this.cells[addr] = new Memory.Cell('.memcell-' + addr, conf.wordLength, 0, true);
+      this.cells[addr] = new Memory.Cell('#memory-cell-' + addr, conf.wordLength, 0, true);
     }
     
   }
@@ -38,7 +38,7 @@
       for (line = 0 ; line < lines ; ++line) {
         html += '<tr><th>' + addr + '</th>';
         for (col = 0 ; col < cols ; ++col) {
-          html += '<td class="memcell memcell-' + addr + '">0</td>';
+          html += '<td id="memory-cell-' + addr + '">0</td>';
           ++addr;
         }
         html += '</tr>';

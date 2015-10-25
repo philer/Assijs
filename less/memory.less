@@ -1,6 +1,12 @@
 
-.updated {
-  color: #0cc;
+.memory-cell {
+  transition-property: background, box-shadow;
+  transition-duration: .25s;
+  &.updated {
+    font-weight: bold;
+    color: #0cc;
+    // text-shadow: 0 0 1px #0cc;
+  }
 }
 
 // controls
@@ -26,7 +32,8 @@
     }
   }
 
-  .accessed {
-    box-shadow: inset 0 0 2px red;
+  .memory-cell.accessed {
+    background-color: #133;
+    box-shadow: inset 0 0 2px #066;
   }
 }

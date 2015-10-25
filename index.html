@@ -7,7 +7,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Assi.js</title>
+    <title>Assijs</title>
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="dist/Assijs.css" rel="stylesheet">
   </head>
@@ -23,7 +23,11 @@
         ><a class="button cpu-step-forward"><i class="fa fa-fw fa-step-forward"></i></a
         ><a class="button cpu-op-step-forward"><i class="fa fa-fw fa-forward"></i></a
         ><a class="button cpu-fast-forward"><i class="fa fa-fw fa-fast-forward"></i></a>
-        <input class="cpu-speed" type="range" min="0" max="1000" value="500" step="10" />
+        <!-- <input class="cpu-speed" type="range" min="0" max="1000" value="500" step="10" /> -->
+        <fieldset>
+          <label for="cpu-speed">Speed</label
+          ><input id="cpu-speed" type="range" min="1" max="1000" step="10" value="500" />
+        </fieldset>
       </nav>
       
       <div class="cpu scrollbox">
@@ -35,12 +39,9 @@
         </dl>
         
         <div>
-          <input type="checkbox" id="z-flag" disabled="true"
-          /><label for="z-flag">Z</label
-          ><input type="checkbox" id="n-flag" disabled="true"
-          /><label for="n-flag">N</label
-          ><input type="checkbox" id="v-flag" disabled="true"
-          /><label for="v-flag">V</label>
+          <input type="checkbox" id="z-flag" /><label for="z-flag">Z</label
+          ><input type="checkbox" id="n-flag" /><label for="n-flag">N</label
+          ><input type="checkbox" id="v-flag" /><label for="v-flag">V</label>
         </div>
       </div>
       <div class="cpu-log" style="position:absolute;top:1.33em;right:1.33em;font-size:.75em"></div>

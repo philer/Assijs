@@ -15,7 +15,7 @@
     , ops
     , conf
   )
-    .setSpeed($('.cpu-speed').val())
+    .setSpeed($('#cpu-speed').val())
     ;
   
   var assembler = new Assembler(cpu, ops);
@@ -73,7 +73,7 @@
   $('.cpu-op-step-forward').click(cpu.opStep.bind(cpu));
   $('.cpu-fast-forward').click(cpu.fastForward.bind(cpu));
   
-  $('.cpu-speed').change(function() {
+  $('#cpu-speed').change(function() {
     cpu.setSpeed(this.value);
   });
   
